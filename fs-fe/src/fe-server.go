@@ -8,6 +8,8 @@ import (
 	"strconv"
 )
 
+//127.0.0.1
+//35.233.157.251
 const Base_Url = "http://35.233.157.251:8080"
 
 func main() {
@@ -35,10 +37,10 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 
 //
 func PostsHandler(w http.ResponseWriter, r *http.Request) {
-	if r.FormValue("access_token") == "" || r.FormValue("userid") == "" {
+	/*if r.FormValue("access_token") == "" || r.FormValue("userid") == "" {
 		log.Print("User parameteres not provided")
 		return
-	}
+	}*/
 	user := IGAuthCred{Token: r.FormValue("access_token")}
 	user.User.Id = r.FormValue("userid")
 	ShowPosts(w, r, &user)
@@ -78,6 +80,6 @@ func PrepPosts(posts *Posts) map[string][]string {
 func IGLoginCallback(w http.ResponseWriter, r *http.Request) {
 	user := IGAuthCred{}
 	IGLogin(w, r, &user)
-	url := fmt.Sprintf("%v/posts/?access_token=%v&userid=%v", Base_Url, user.Token, user.User.Id)
+	url := fmt.Sprintf("/posts/?access_token=%v&userid=%v", user.Token, user.User.Id)
 	http.Redirect(w, r, url, 301)
 }
