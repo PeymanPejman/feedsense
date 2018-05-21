@@ -64,6 +64,26 @@ func IGLogin(w http.ResponseWriter, r *http.Request, user *IGAuthCred) {
 	}
 }
 
+func Parse(resp *http.Response, dest *interface{}) {
+	b, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		log.Print("Error reading the body", err)
+	}
+
+	err = json.Unmarshal(b, &dest)
+
+	if err != nil {
+		log.Print("Error unmarshalling the reponse", err)
+	}
+
+	err = resp.Body.Close()
+
+	if err != nil {
+		log.Print("Cannot close the body", err)
+	}
+}
+
 // GetPosts retrive metadata of all the recent posts in IG and returns Posts
 func GetPosts(w http.ResponseWriter, r *http.Request, user *IGAuthCred) Posts {
 	//Replace with call to IGBot to get posts

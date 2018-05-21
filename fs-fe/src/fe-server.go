@@ -1,17 +1,23 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 	"strconv"
 )
 
+const Base_Url = "http://127.0.0.1:8080"
+
 func main() {
 	http.HandleFunc("/", HomePage)
 	http.HandleFunc("/IGLoginCallback", IGLoginCallback)
+	http.HandleFunc("/posts", PostsHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
+
+/******** HTTP Endpoints *********/
 
 // HomePage serves the first page users land on
 func HomePage(w http.ResponseWriter, r *http.Request) {
@@ -27,10 +33,14 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// IGLoginCallback creates a user with credentials from IG
-func IGLoginCallback(w http.ResponseWriter, r *http.Request) {
-	user := IGAuthCred{}
-	IGLogin(w, r, &user)
+//
+func PostsHandler(w http.ResponseWriter, r *http.Request) {
+	if r.FormValue("access_token") == "" || r.FormValue("userid") == "" {
+		log.Print("User parameteres not provided")
+		return
+	}
+	user := IGAuthCred{Token: r.FormValue("access_token")}
+	user.User.Id = r.FormValue("userid")
 	ShowPosts(w, r, &user)
 }
 
@@ -60,4 +70,14 @@ func PrepPosts(posts *Posts) map[string][]string {
 	}
 
 	return res
+}
+
+/******** HTTP Authn callbacks *********/
+
+// IGLoginCallback creates a user with credentials from IG
+func IGLoginCallback(w http.ResponseWriter, r *http.Request) {
+	user := IGAuthCred{}
+	IGLogin(w, r, &user)
+	url := fmt.Sprintf("%v/posts/?access_token=%v&userid=%v", Base_Url, user.Token, user.User.Id)
+	http.Redirect(w, r, url, 301)
 }
