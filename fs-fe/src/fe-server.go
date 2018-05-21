@@ -13,7 +13,7 @@ const Base_Url = "http://35.233.157.251:8080"
 func main() {
 	http.HandleFunc("/", HomePage)
 	http.HandleFunc("/IGLoginCallback", IGLoginCallback)
-	http.HandleFunc("/posts", PostsHandler)
+	http.HandleFunc("/posts/", PostsHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
