@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: fs-fe
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: fs-fe
+    spec:
+      containers:
+      - image: gcr.io/feedsense-204023/fs-fe
+        name: fs-fe
+        env:
+          - name: ENVIRONMENT
+            value: "production"
+        ports:
+        - containerPort: 8080
+          name: fs-fe-http

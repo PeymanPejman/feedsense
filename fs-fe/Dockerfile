@@ -1,11 +1,13 @@
 FROM golang:1.8
 
-RUN mkdir -p /feedsense
+RUN mkdir -p /go/src/feedsense
 
-WORKDIR /feedsense
+WORKDIR /go/src/feedsense/src
 
-ADD . /feedsense
+ADD . / /go/src/feedsense/
 
-RUN go build ./hello.go
+RUN go install -v feedsense/src
 
-CMD ["./hello"]
+CMD ["src"]
+
+# Set port as ENV variable here 
