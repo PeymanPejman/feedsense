@@ -26,17 +26,16 @@ RUN go get google.golang.org/grpc
 RUN go get github.com/golang/protobuf/protoc-gen-go
 
 # Make project directory
-RUN mkdir -p /go/src/feedsense
+RUN mkdir -p /go/src/feedsense/fs-igbot
 
 # Set working directory
-WORKDIR /go/src/feedsense/src
+WORKDIR /go/src/feedsense/fs-igbot/src
 
 # Add source code directory
-ADD . / /go/src/feedsense/
+ADD . / /go/src/feedsense/fs-igbot/
 
 # Build go binaries
-RUN go install -v feedsense/src
+RUN go install -v feedsense/fs-igbot/src
 
 # Run go binary
 CMD ["src"]
-
