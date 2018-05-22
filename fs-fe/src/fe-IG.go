@@ -10,7 +10,7 @@ import (
 )
 
 const IG_API_URL = "https://api.instagram.com"
-const REDIRECT_URL = BaseUrl + "/IGLoginCallback"
+const REDIRECT_URL = BaseURL + "/IGLoginCallback"
 const CLIENT_SECRET = "a8828a03a5144f43a863b2d49d69f60f"
 const CLIENT_ID = "2b651acd74af417686fba2086af5b962"
 

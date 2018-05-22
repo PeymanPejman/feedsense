@@ -1,0 +1,10 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: fs-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: fs-static-ip
+spec:
+  backend:
+    serviceName: fs-fe
+    servicePort: 8080

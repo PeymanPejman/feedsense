@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	port       = ":34000"
+	port       = ":fs-igbot-rpc"
 	IG_API_URL = "https://api.instagram.com"
 )
 

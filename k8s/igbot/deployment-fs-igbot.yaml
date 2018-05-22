@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: fs-igbot-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fs-igbot
+  template:
+    metadata:
+      labels:
+        app: fs-igbot
+        version: v1
+    spec:
+      containers:
+        - name: fs-igbot
+          image: gcr.io/feedsense-204023/fs-fe:latest
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 34000
+            name: fs-igbot-rpc
+
+
+              
+
