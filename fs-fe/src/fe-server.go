@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-const Base_Url = "http://35.233.157.251:8080"
+const Base_Url = "http://35.230.43.0:8080"
 
 func main() {
 	http.HandleFunc("/", HomePage)

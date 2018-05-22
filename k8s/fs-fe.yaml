@@ -4,17 +4,23 @@ metadata:
   name: fs-fe
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: fs-fe
   template:
     metadata:
       labels:
-        name: fs-fe
+        app: fs-fe
+        version: v1
     spec:
       containers:
-      - image: gcr.io/feedsense-204023/fs-fe
-        name: fs-fe
-        env:
-          - name: ENVIRONMENT
-            value: "production"
-        ports:
-        - containerPort: 8080
-          name: fs-fe-http
+        - name: fs-fe
+          image: gcr.io/feedsense-204023/fs-fe:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: DEMO_ENV
+              value: staging
+
