@@ -4,6 +4,9 @@ FROM golang:1.8
 
 RUN apt-get update && apt-get -y install unzip && apt-get clean
 
+EXPOSE 34000
+EXPOSE 8080
+
 # Install protobuf
 ENV PB_VER 3.1.0
 

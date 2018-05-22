@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	pb "feedsense/fs-igbot/src/protos"
 	"fmt"
@@ -10,6 +9,8 @@ import (
 	"net"
 	"net/http"
 	"strings"
+
+	"golang.org/x/net/context"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
