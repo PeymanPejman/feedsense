@@ -11,11 +11,11 @@ spec:
     metadata:
       labels:
         app: fs-fe
-        version: v1
+        version: v2
     spec:
       containers:
         - name: fs-fe
-          image: gcr.io/feedsense-204023/fs-fe:v1
+          image: gcr.io/feedsense-204023/fs-fe:v2
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -23,4 +23,7 @@ spec:
           env:
             - name: DEMO_ENV
               value: staging
+
+
+              
 

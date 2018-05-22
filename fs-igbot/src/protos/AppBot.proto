@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package AppBot;
+
+import "google/protobuf/timestamp.proto";
+
+service AppBot {
+    // Given a Client, returns a collection of recent threads
+    rpc GetClientThreads(Client) returns (GetClientThreadsResponse) {}
+
+    // Given a Thread, returns all the comments from that thread
+    rpc GetThreadComments(Thread) returns (GetThreadCommentsResponse) {}
+}
+
+// Application specific user credentials
+message User {
+    string userId = 1;
+    string accessToken = 2;
+}
+
+// Describes the clinet by specifying the application agent
+message Client {
+    User user = 1;
+    enum App {
+        INSTAGRAM = 0;
+        REDDIT = 1;
+        GMAIL = 2;
+        FACEBOOK = 3;
+        TWITTER = 4;
+    }
+    App agent = 2;
+}
+
+// Represents a single thread
+message Thread {
+    string Id = 1;
+    Client owner = 2;
+    string title = 3;
+    google.protobuf.Timestamp createdTime = 4;
+    int32 commentCount = 5;
+
+    // Media options
+    enum Type {
+        VIDEO = 0;
+        IMAGE = 1;
+        TEXT = 2;
+        AUDIO = 3;
+    }
+    Type type = 6;
+    string url = 7;
+}
+
+// Represents a collection of threads
+message GetClientThreadsResponse {
+    repeated Thread threads = 1;
+}
+
+// Represents a single comment
+message Comment {
+    string commentId = 1;
+    string text = 2;
+    string owner = 3;
+    google.protobuf.Timestamp createdTime = 4;
+    Thread thread = 5;
+}
+
+// Represents a collection of all the comments in a Thread
+message GetThreadCommentsResponse {
+    repeated Comment comments = 1;
+}
+
+
+

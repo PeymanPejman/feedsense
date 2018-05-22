@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -11,7 +10,7 @@ import (
 )
 
 const IG_API_URL = "https://api.instagram.com"
-const REDIRECT_URL = Base_Url + "/IGLoginCallback"
+const REDIRECT_URL = BaseUrl + "/IGLoginCallback"
 const CLIENT_SECRET = "a8828a03a5144f43a863b2d49d69f60f"
 const CLIENT_ID = "2b651acd74af417686fba2086af5b962"
 
@@ -62,57 +61,4 @@ func IGLogin(w http.ResponseWriter, r *http.Request, user *IGAuthCred) {
 	if err != nil {
 		log.Print("Cannot close the body", err)
 	}
-}
-
-func Parse(resp *http.Response, dest *interface{}) {
-	b, err := ioutil.ReadAll(resp.Body)
-
-	if err != nil {
-		log.Print("Error reading the body", err)
-	}
-
-	err = json.Unmarshal(b, &dest)
-
-	if err != nil {
-		log.Print("Error unmarshalling the reponse", err)
-	}
-
-	err = resp.Body.Close()
-
-	if err != nil {
-		log.Print("Cannot close the body", err)
-	}
-}
-
-// GetPosts retrive metadata of all the recent posts in IG and returns Posts
-func GetPosts(w http.ResponseWriter, r *http.Request, user *IGAuthCred) Posts {
-	//Replace with call to IGBot to get posts
-	if user.Token == "" {
-		log.Print("User not authenticated")
-		http.Redirect(w, r, "/", 301)
-	}
-
-	s := []string{IG_API_URL, "/v1/users/self/media/recent/?&access_token=", user.Token}
-	url := strings.Join(s, "")
-
-	resp, err := http.Get(url)
-	if err != nil {
-		log.Print("Could not get posts from IG : ", err)
-	}
-
-	posts := Posts{}
-	b, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Print("Cannot close the body", err)
-	}
-
-	err = json.Unmarshal(b, &posts)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	resp.Body.Close()
-
-	return posts
-
 }

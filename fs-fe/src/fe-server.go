@@ -1,14 +1,23 @@
 package main
 
 import (
+	"context"
+	pb "feedsense/fs-fe/src/protos"
 	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 	"strconv"
+	"time"
+
+	"google.golang.org/grpc"
 )
 
-const Base_Url = "http://35.230.43.0:8080"
+const (
+	BaseUrl = "http://35.230.43.0:8080"
+	address = "localhost:34000"
+	name    = "fs-fe"
+)
 
 func main() {
 	http.HandleFunc("/", HomePage)
@@ -33,19 +42,30 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//
 func PostsHandler(w http.ResponseWriter, r *http.Request) {
-	if r.FormValue("access_token") == "" || r.FormValue("userid") == "" {
-		log.Print("User parameteres not provided")
-		return
+	cl := &pb.Client{
+		User: &pb.User{
+			UserId: r.FormValue("userid"), AccessToken: r.FormValue("access_token")},
+		Agent: 0}
+
+	conn, err := grpc.Dial(address, grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
 	}
-	user := IGAuthCred{Token: r.FormValue("access_token")}
-	user.User.Id = r.FormValue("userid")
-	ShowPosts(w, r, &user)
+	defer conn.Close()
+	c := pb.NewAppBotClient(conn)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	t, err := c.GetClientThreads(ctx, cl)
+	if err != nil {
+		log.Fatalf("could not get threads: %v", err)
+	}
+	log.Printf(t.Threads[0].Id)
 }
 
 //ShowPosts serves info (post id, post caption, time created, comment count) about recenet posts
-func ShowPosts(w http.ResponseWriter, r *http.Request, user *IGAuthCred) {
+/*func ShowPosts(w http.ResponseWriter, r *http.Request, user *IGAuthCred) {
 	posts := GetPosts(w, r, user)
 	t, err := template.ParseFiles("views/posts.html")
 	if err != nil {
@@ -58,7 +78,7 @@ func ShowPosts(w http.ResponseWriter, r *http.Request, user *IGAuthCred) {
 	if err != nil {
 		log.Print("template executing error: ", err)
 	}
-}
+}*/
 
 // PrepPosts prepares necessary properties of a post to show to user
 func PrepPosts(posts *Posts) map[string][]string {
@@ -78,6 +98,6 @@ func PrepPosts(posts *Posts) map[string][]string {
 func IGLoginCallback(w http.ResponseWriter, r *http.Request) {
 	user := IGAuthCred{}
 	IGLogin(w, r, &user)
-	url := fmt.Sprintf("%v/posts/?access_token=%v&userid=%v", Base_Url, user.Token, user.User.Id)
+	url := fmt.Sprintf("%v/posts/?access_token=%v&userid=%v", BaseUrl, user.Token, user.User.Id)
 	http.Redirect(w, r, url, 302)
 }
