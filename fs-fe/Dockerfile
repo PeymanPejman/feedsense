@@ -39,4 +39,3 @@ RUN go install -v feedsense/src
 
 # Run go binary
 CMD ["src"]
-
