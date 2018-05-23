@@ -5,7 +5,7 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 34000
-      targetPort: fs-igbot-rpc
+    - port: 30200
+      targetPort: 30200
   selector:
     name: fs-igbot

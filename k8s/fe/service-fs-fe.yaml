@@ -1,13 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: fs-fe-service
+  name: fs-fe
+  labels:
+    app: fs-fe
 spec:
   type: NodePort
   ports:
     - port: 8080
-      targetPort: fs-fe-service
-    - port: 34000
-      targetPort: fs-fe-rpc
+      targetPort: 8080
+      protocol: TCP
   selector:
-    name: fs-fe
+    app: fs-fe

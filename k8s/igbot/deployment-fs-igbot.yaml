@@ -11,16 +11,11 @@ spec:
     metadata:
       labels:
         app: fs-igbot
-        version: v1
     spec:
       containers:
         - name: fs-igbot
-          image: gcr.io/feedsense-204023/fs-igbot:latest
+          image: gcr.io/feedsense-204023/fs-igbot:v1
           imagePullPolicy: Always
           ports:
-          - containerPort: 34000
-            name: fs-igbot-rpc
-
-
-              
-
+          - containerPort: 30200
+            name: rpc

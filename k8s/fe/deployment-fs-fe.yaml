@@ -11,18 +11,11 @@ spec:
     metadata:
       labels:
         app: fs-fe
-        version: v1
     spec:
       containers:
         - name: fs-fe
-          image: gcr.io/feedsense-204023/fs-fe:latest
+          image: gcr.io/feedsense-204023/fs-fe:v1
           imagePullPolicy: Always
           ports:
-          - containerPort: 8080
-            name: fs-fe-service
-          - containerPort: 34000
-            name: fs-fe-rpc
-
-
-              
-
+          - name: http
+            containerPort: 8080
