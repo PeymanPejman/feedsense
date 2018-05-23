@@ -13,8 +13,8 @@ import (
 )
 
 const (
-	BaseURL = "http://127.0.0.1"
-	Address = "localhost:30200"
+	BaseURL = "http://127.0.0.1:8000"
+	Address = ":30200"
 	Name    = "fs-fe"
 )
 
