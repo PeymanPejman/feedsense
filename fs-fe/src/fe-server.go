@@ -13,8 +13,8 @@ import (
 )
 
 const (
-	BaseURL = "http://107.178.250.178"
-	Address = "fs-igbot:30200"
+	BaseURL = "http://127.0.0.1"
+	Address = "localhost:30200"
 	Name    = "fs-fe"
 )
 
@@ -22,7 +22,7 @@ func main() {
 	http.HandleFunc("/", HomePage)
 	http.HandleFunc("/IGLoginCallback", IGLoginCallback)
 	http.HandleFunc("/posts/", ThreadsHandler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":8000", nil))
 }
 
 /******** HTTP Endpoints *********/
