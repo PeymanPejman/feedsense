@@ -5,14 +5,14 @@
 </head>
 <table id="fancy" class="display">
     <thead>
-        <th>Post ID</th>
+        <th>Thread ID</th>
         <th>Caption</th>
         <th>Comment Count</th>
     </thead>
     <tbody>
         {{range $Id, $Val := .Posts}}
             <tr>
-                <td>{{$Id}}</td>
+                <td><a href="/sentiment/?ThreadId={{$Id}}">{{$Id}}</a></td>
                 {{range $Attr := $Val}}
                     <td>{{$Attr}}</td>
                 {{end}}

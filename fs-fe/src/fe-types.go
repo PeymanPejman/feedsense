@@ -8,7 +8,7 @@ type IGAuthCred struct {
 	} `json:"user"`
 }
 
-type Posts struct {
+type Threads struct {
 	Pagination struct {
 	} `json:"pagination"`
 	Data []struct {
@@ -68,6 +68,10 @@ type Posts struct {
 	} `json:"meta"`
 }
 
-type PostsContent struct {
-	Posts map[string][]string
+type ThreadsContent struct {
+	Threads map[string][]string
+}
+
+type SentimentContent struct {
+	Sentiment []string
 }

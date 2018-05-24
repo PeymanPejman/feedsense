@@ -81,13 +81,27 @@ type Posts struct {
 	} `json:"meta"`
 }
 
+type Comments struct {
+	Data []struct {
+		CreatedTime string `json:"created_time"`
+		Text        string `json:"text"`
+		From        struct {
+			Username       string `json:"username"`
+			ProfilePicture string `json:"profile_picture"`
+			ID             string `json:"id"`
+			FullName       string `json:"full_name"`
+		} `json:"from"`
+		ID string `json:"id"`
+	} `json:"data"`
+}
+
 // server is used to implement AppBot
 type server struct{}
 
 // SayHello implements helloworld.GreeterServer
 func (s *server) GetClientThreads(ctx context.Context, in *pb.Client) (*pb.GetClientThreadsResponse, error) {
 	if in.User.AccessToken == "" {
-
+		return nil, nil
 	}
 	str := []string{IG_API_URL, "/v1/users/self/media/recent/?&access_token=", in.User.AccessToken}
 	url := strings.Join(str, "")
@@ -129,8 +143,43 @@ func (s *server) GetClientThreads(ctx context.Context, in *pb.Client) (*pb.GetCl
 	return &pb.GetClientThreadsResponse{Threads: ts}, nil
 }
 
-func (s *server) GetThreadComments(ctx context.Context, in *pb.Thread) (*pb.GetThreadCommentsResponse, error) {
-	return nil, nil
+func (s *server) GetThreadComments(ctx context.Context, th *pb.Thread) (*pb.GetThreadCommentsResponse, error) {
+	if th.Owner.User.AccessToken == "" {
+		log.Fatalf("Not authenticated")
+		return nil, nil
+	}
+
+	if th.Id == "" {
+		log.Fatalf("Unknown thread")
+		return nil, nil
+	}
+
+	comments := Comments{}
+
+	url := fmt.Sprintf("https://api.instagram.com/v1/media/%v/comments?access_token=%v", th.Id, th.Owner.User.AccessToken)
+	resp, err := http.Get(url)
+	if err != nil {
+		fmt.Println(err)
+	}
+	b, _ := ioutil.ReadAll(resp.Body)
+	err = json.Unmarshal(b, &comments)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	result := []*pb.Comment{}
+	for _, comment := range comments.Data {
+		cm := &pb.Comment{
+			CommentId: comment.ID,
+			Text:      comment.Text,
+			Owner:     comment.From.Username,
+			//CreatedTime: comment.CreatedTime,
+			Thread: th,
+		}
+		result = append(result, cm)
+	}
+
+	return &pb.GetThreadCommentsResponse{Comments: result}, nil
 }
 
 func main() {

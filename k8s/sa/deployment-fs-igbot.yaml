@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: fs-sa-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fs-sa
+  template:
+    metadata:
+      labels:
+        app: fs-sa
+    spec:
+      containers:
+        - name: fs-sa
+          image: gcr.io/feedsense-204023/fs-sa:v1
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 30100
+            name: fs-sa-rpc

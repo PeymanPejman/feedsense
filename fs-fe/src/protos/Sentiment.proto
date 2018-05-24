@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package protos;
+
+import "Bot.proto";
+import "google/protobuf/timestamp.proto";
+
+service SentimentAnalysis {
+    // Given a Thread, returns that thread's aggregated sentiment
+    rpc GetCurrentThreadSentiment(Thread) returns (ThreadSentiment);
+ 
+    // Given a Thread, returns a collection of previously computed sentiment scores
+    //rpc GetThreadSentimentHistor(Thread) returns GetThreadSentimentHistoryResponse;
+   
+    //Given a Cient, returns a collection of all current Thread sentiments
+    rpc GetAllCurrentClientThreadsSentiment(Client) returns (GetAllCurrentClientThreadsSentimentResponse);
+ }
+ 
+ // Represents a single aggregated score for a single Thread
+ message ThreadSentiment {
+    double score = 1;
+    google.protobuf.Timestamp createdTime = 2;
+    Thread thread = 3;
+ }
+ 
+ // Represents a collection of ThreadSentiment scores
+ message GetAllCurrentClientThreadsSentimentResponse {
+    repeated ThreadSentiment sentiments = 1;
+ }

@@ -18,19 +18,20 @@ import (
 )
 
 const (
-	BaseURL = "http://107.178.250.178"
-	Address = "fs-igbot-svc:30200"
-	Name    = "fs-fe"
-	port    = ":30100"
+	BaseURL       = "http://107.178.250.178"
+	Address_igbot = "fs-igbot-svc:30200"
+	Name          = "fs-fe"
+	port          = ":30100"
 )
 
+// SentimentResponse to hold the result coming from NLP calls
 type SentimentResponse struct {
 	Comment   string
 	Sentiment string
 	Score     float32
 }
 
-// server is used to implement AppBot
+// server is used to implement SentimentAnalysis Service
 type server struct{}
 
 // GetSentiment gets sentiment analysis response from Google Cloud NLP
@@ -73,8 +74,9 @@ func GetSentiment(wg *sync.WaitGroup, c chan SentimentResponse, text string) {
 	}
 }
 
+// GetThreadComments makes an RPC call to *Bot to get all comments in a thread
 func GetThreadComments(th *pb.Thread) (*pb.GetThreadCommentsResponse, error) {
-	conn, err := grpc.Dial(Address, grpc.WithInsecure())
+	conn, err := grpc.Dial(Address_igbot, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}

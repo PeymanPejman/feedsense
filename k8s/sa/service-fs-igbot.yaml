@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fs-sa-svc
+  labels:
+    app: fs-sa
+spec:
+  type: NodePort
+  ports:
+    - port: 30100
+      targetPort: 30100
+      protocol: TCP
+      name: fs-sa-rpc
+  selector:
+    app: fs-sa
