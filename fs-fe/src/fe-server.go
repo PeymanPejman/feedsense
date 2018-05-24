@@ -61,7 +61,6 @@ func ThreadsHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatalf("could not get threads: %v", err)
 	}
-	log.Printf(t.Threads[0].Id)
 	ShowThreads(w, t)
 }
 
@@ -85,7 +84,7 @@ func PrepThreads(t *pb.GetClientThreadsResponse) map[string][]string {
 	res := make(map[string][]string)
 
 	for _, thread := range t.Threads {
-		attr := []string{thread.Title, thread.CreatedTime.String(), fmt.Sprint(thread.CommentCount)}
+		attr := []string{thread.Id, thread.Title, fmt.Sprint(thread.CommentCount)}
 		res[thread.Id] = attr
 	}
 

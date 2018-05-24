@@ -81,7 +81,7 @@ type Posts struct {
 	} `json:"meta"`
 }
 
-// server is used to implement helloworld.GreeterServer.
+// server is used to implement AppBot
 type server struct{}
 
 // SayHello implements helloworld.GreeterServer
@@ -113,7 +113,18 @@ func (s *server) GetClientThreads(ctx context.Context, in *pb.Client) (*pb.GetCl
 	ts := []*pb.Thread{}
 
 	for _, p := range posts.Data {
-		ts = append(ts, &pb.Thread{Id: p.ID})
+		ts = append(ts, &pb.Thread{
+			Id:    p.ID,
+			Title: p.Caption.Text,
+			Owner: &pb.Client{
+				User: &pb.User{
+					UserId:      p.User.Username,
+					AccessToken: in.User.AccessToken},
+				Agent: pb.Client_INSTAGRAM},
+			CommentCount: int32(p.Comments.Count),
+			Type:         pb.Thread_IMAGE,
+			Url:          p.Link,
+		})
 	}
 	return &pb.GetClientThreadsResponse{Threads: ts}, nil
 }
