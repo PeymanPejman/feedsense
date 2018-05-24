@@ -6,5 +6,5 @@ metadata:
     kubernetes.io/ingress.global-static-ip-name: fs-static-ip
 spec:
   backend:
-    serviceName: fs-fe
+    serviceName: fs-fe-svc
     servicePort: 8080
