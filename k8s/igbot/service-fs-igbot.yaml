@@ -2,10 +2,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: fs-igbot
+  labels:
+    app: fs-igbot
 spec:
   type: NodePort
   ports:
     - port: 30200
       targetPort: 30200
+      protocol: TCP
+      name: fs-igbot-rpc
   selector:
-    name: fs-igbot
+    app: fs-igbot
