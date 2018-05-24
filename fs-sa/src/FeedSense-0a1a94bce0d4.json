@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "feedsense-204023",
+  "private_key_id": "0a1a94bce0d43d075469389c73e9d6ad60328ee6",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCqVKqppftlpXKW\nBEdjkKYm97FVYy6tE3d2DS7hM3djnV39qb2xUcOGS12YI80iZjx1cURlNssRaMZV\nQ9N6cggh2yrX5v5KNqeUvIXCVlZnLUnIfHTFLcqmBs3TQLN0Z5CmFXHwJfNDVGRL\nS594Ery6TnnuHI8+Ty0ITgdDtDPaen4MM6FqjTVTLoWEF8Ah+9BEqBdXmmbNn1lM\nz5XxNOqgG8VZJp0jxKn2LWAzdClo9jYoMv5KmIxgK10S2CQufFCYZ54voQERIPGK\ngulLANAnSG2fei0H/iAPL5KB5I51fb4XQ+fQeCnENGGuFcUbM95n946yMmUZ61Om\nLPWgPHlvAgMBAAECggEADiKV7HDjJVL5k2F/hc+3OidMBsitqEdOnp6xc+w6zYAo\nZf30HrGpBuKyPbHwOsPpOIXR0I8fgwOtkd3dwEeTooZMTpEo1oJ6nb6XYG1HIQDX\nzVTRYUZPjupO970NfMIrdYefZk0qnD0gpZmnqOXv1jY1ACxL5uEt3NvngRgvRW4f\ngJ1dcwZXp/L/ChubToAHHsioZP+B2IBGtVRtznp8yPlbC3rv8aqS1bzZr3KDFiwS\nhYCpoXwhtq8QXkQBlr3wDpTl0aE0fa8mErooBpwoOaeVzhBeBZMIzkvDzazXpZHY\nCoB5V2n0p182EkM9+qGkiPKvi0Xo6iThnyfHQw/5oQKBgQDePaPN2jX6wKfTtiwJ\n6XYT0DAQKDmDXxNHS96VUQlvKOdUMsHF4cH0tSrYN3w8Q8TVfUlG7Y6VL3/YEDtD\niy7YCHTMOs4ceXg+Eh9XBrmXLF0xgitjcGAveMOUq4LXaELtzFwY7khKhOnvXBaO\nkNLZQuR3DkI7WteLyG7i7PICJQKBgQDENGGZrilpuR/gsn7RjEa2C+ub2XbIkegt\nWrrBWg10ZiikYs09FvbCi2VX5U15okBYPxDrapMyngZg7FCxcCzUSy5MWIiMJwVY\n0Y+P+KSqPYRFMyvzjOXgdVH4//Yk5P4siMNaB1/RYJ97Wefa0nIhU+46kYssMQdN\nazOSiQa3AwKBgE2lOYKlN3DJOJl2L0KzR2a6uOAcPaPRZtnk/voqGuK0ZsX7CcpK\nCsqlNTffgs9HWhDAugZG3ybuNntViG8bxJ0Dr1LfRL2cDs+Y40wzdEoF3PV8Jg6S\n53gOeD6MAaWirqeIW7D2J1mpwFW5VcQvgwsXHN0fpTI5lc8nkt5DrHXlAoGAVzNM\nmWe9Qh6j21KZaHpmxuv/V/HLiBLI1Ld5PwvN5QiuUXkT7G2zV/1qGilwSHnjDRVi\naK6iIyH2hcchieroEaYkOowyi8+f4bypiHwiewMCMVsv0nuxgxPBTeA8vmMD0Dks\nUWvrmvvNhZ4MnMVhMgzCWUdsSkS0ESVu81ZxJI8CgYEAlXgYfFJqHkXRKHM8HR+0\nml7r3Q8Tq+YhF9UWHfnhEDVhmAhB9+Gj030VByjy6rdztkusXn3uQxnaTJWqV5TK\nzRFuUuK5F29AlG2wD3sl/oB+58TylR1haiVyU0bGigmKK18Uo5aEujmtB9FPjEP5\nHWgeRlokpH4y0zsj/39ekNc=\n-----END PRIVATE KEY-----\n",
+  "client_email": "feedsense@feedsense-204023.iam.gserviceaccount.com",
+  "client_id": "109740342815049900916",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/feedsense%40feedsense-204023.iam.gserviceaccount.com"
+}
