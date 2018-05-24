@@ -1,12 +1,12 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: fs-fe
+  name: fs-fe-dep
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: fs-fe-dep
+      app: fs-fe
   template:
     metadata:
       labels:

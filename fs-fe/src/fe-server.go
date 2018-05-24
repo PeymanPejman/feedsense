@@ -14,7 +14,7 @@ import (
 
 const (
 	BaseURL = "http://107.178.250.178"
-	Address = "fs-igbot:30200"
+	Address = "fs-igbot-svc:30200"
 	Name    = "fs-fe"
 )
 
