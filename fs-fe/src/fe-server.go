@@ -14,9 +14,9 @@ import (
 )
 
 const (
-	BaseURL       = "http://107.178.250.178"
-	Address_igbot = "fs-igbot-svc:30200"
-	Address_sa    = "fs-sa-svc:30100"
+	BaseURL       = "http://127.0.0.1"
+	Address_igbot = "http://127.0.0.1:30200"
+	Address_sa    = "http://127.0.0.1:30100"
 	Name          = "fs-fe"
 )
 
@@ -25,7 +25,7 @@ func main() {
 	http.HandleFunc("/IGLoginCallback", IGLoginCallback)
 	http.HandleFunc("/threads/", ThreadsHandler)
 	http.HandleFunc("/sentiment/", SentimentHandler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":8000", nil))
 }
 
 /******** HTTP Endpoints *********/
