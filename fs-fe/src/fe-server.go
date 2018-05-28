@@ -25,7 +25,7 @@ func main() {
 	http.HandleFunc("/IGLoginCallback", IGLoginCallback)
 	http.HandleFunc("/threads/", ThreadsHandler)
 	http.HandleFunc("/sentiment/", SentimentHandler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":8000", nil))
 }
 
 /******** HTTP Endpoints *********/
@@ -121,7 +121,7 @@ func IGLoginCallback(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, url, 302)
 	}
 
-	cookie := http.Cookie{Name: "access_token", Value: user.Token}
+	cookie := http.Cookie{Name: "access_token", Value: user.Token, Path: "/", Expires: time.Now().Add(5 * time.Minute)}
 	http.SetCookie(w, &cookie)
 	url := fmt.Sprintf("%v/threads/", BaseURL)
 	http.Redirect(w, r, url, 302)
