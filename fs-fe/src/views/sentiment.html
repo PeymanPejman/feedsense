@@ -5,15 +5,13 @@
 </head>
 <table id="fancy" class="display">
     <thead>
-        <th>Thread</th>
+        <th>Thread Id</th>
         <th>Sentiment Score</th>
         <th>Sentiment</th>
     </thead>
     <tbody>
         {{range $Id, $Val := .Sentiment}}
-            <tr>
-                <td>{{$val}}</td>
-            </tr>
+            <td>{{$Val}}</td>
         {{end}}
     </tbody>
 </table>

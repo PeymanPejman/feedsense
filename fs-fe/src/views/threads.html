@@ -10,7 +10,7 @@
         <th>Comment Count</th>
     </thead>
     <tbody>
-        {{range $Id, $Val := .Posts}}
+        {{range $Id, $Val := .Threads}}
             <tr>
                 <td><a href="/sentiment/?ThreadId={{$Id}}">{{$Id}}</a></td>
                 {{range $Attr := $Val}}

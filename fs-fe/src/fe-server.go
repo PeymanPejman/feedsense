@@ -14,9 +14,9 @@ import (
 )
 
 const (
-	BaseURL       = "http://127.0.0.1"
-	Address_igbot = "http://127.0.0.1:30200"
-	Address_sa    = "http://127.0.0.1:30100"
+	BaseURL       = "http://127.0.0.1:8000"
+	Address_igbot = "127.0.0.1:30200"
+	Address_sa    = "127.0.0.1:30100"
 	Name          = "fs-fe"
 )
 
@@ -32,6 +32,11 @@ func main() {
 
 // HomePage serves the first page users land on
 func HomePage(w http.ResponseWriter, r *http.Request) {
+	if IsCookieValid(r) {
+		url := fmt.Sprintf("%v/threads/", BaseURL)
+		http.Redirect(w, r, url, 302)
+	}
+
 	t, err := template.ParseFiles("views/home.html")
 	if err != nil {
 		log.Print("template parsing error: ", err)
@@ -46,11 +51,15 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 
 // SentimentHandler handles sentiment analysis aquisition
 func SentimentHandler(w http.ResponseWriter, r *http.Request) {
+	if !IsCookieValid(r) {
+		url := fmt.Sprintf("%v/", BaseURL)
+		http.Redirect(w, r, url, 302)
+	}
+
 	th := &pb.Thread{
-		Id: r.FormValue("threadid"),
+		Id: r.FormValue("ThreadId"),
 		Owner: &pb.Client{
-			User: &pb.User{UserId: r.FormValue("userid"),
-				AccessToken: r.FormValue("access_token")},
+			User:  &pb.User{AccessToken: MustGetValue("access_token", r)},
 			Agent: pb.Client_INSTAGRAM},
 	}
 
@@ -59,6 +68,7 @@ func SentimentHandler(w http.ResponseWriter, r *http.Request) {
 	conn, err := grpc.Dial(Address_sa, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
+		return
 	}
 	defer conn.Close()
 	c := pb.NewSentimentAnalysisClient(conn)
@@ -68,15 +78,21 @@ func SentimentHandler(w http.ResponseWriter, r *http.Request) {
 	cms, err := c.GetCurrentThreadSentiment(ctx, th)
 	if err != nil {
 		log.Fatalf("could not get threads: %v", err)
+		return
 	}
 	ShowSentiment(w, cms)
 }
 
-// ThreadsHnadler handles the fetching and showing threads
+// ThreadsHandler handles the fetching and showing threads
 func ThreadsHandler(w http.ResponseWriter, r *http.Request) {
+	if !IsCookieValid(r) {
+		url := fmt.Sprintf("%v/", BaseURL)
+		http.Redirect(w, r, url, 302)
+	}
+
 	cl := &pb.Client{
 		User: &pb.User{
-			UserId: r.FormValue("userid"), AccessToken: r.FormValue("access_token")},
+			AccessToken: MustGetValue("access_token", r)},
 		Agent: pb.Client_INSTAGRAM}
 
 	conn, err := grpc.Dial(Address_igbot, grpc.WithInsecure())
@@ -95,7 +111,33 @@ func ThreadsHandler(w http.ResponseWriter, r *http.Request) {
 	ShowThreads(w, t)
 }
 
+/******** HTTP Authn callbacks *********/
+
+// IGLoginCallback creates a user with credentials from IG
+func IGLoginCallback(w http.ResponseWriter, r *http.Request) {
+	user := IGAuthCred{}
+	if !IGLogin(w, r, &user) {
+		url := fmt.Sprintf("%v/", BaseURL)
+		http.Redirect(w, r, url, 302)
+	}
+
+	cookie := http.Cookie{Name: "access_token", Value: user.Token}
+	http.SetCookie(w, &cookie)
+	url := fmt.Sprintf("%v/threads/", BaseURL)
+	http.Redirect(w, r, url, 302)
+}
+
 /******** Helpers *********/
+
+// IsCookieValid checks to see if the cookie contains access token
+func IsCookieValid(r *http.Request) bool {
+	c, _ := r.Cookie("access_token")
+	if c != nil {
+		return IsAccessTokenAlive(MustGetValue("access_token", r))
+	}
+
+	return false
+}
 
 // ShowThreads serves info about recenet threads
 func ShowThreads(w http.ResponseWriter, t *pb.GetClientThreadsResponse) {
@@ -119,7 +161,12 @@ func ShowSentiment(w http.ResponseWriter, t *pb.ThreadSentiment) {
 		log.Print("template parsing error: ", err)
 	}
 
-	sent := []string{t.Thread.Id, strconv.FormatFloat(t.Score, 'f', -1, 64)}
+	feel := "Negative"
+	if t.Score > 0.0 {
+		feel = "Positive"
+	}
+
+	sent := []string{t.Thread.Id, strconv.FormatFloat(t.Score, 'f', 2, 64), feel}
 	p := SentimentContent{Sentiment: sent}
 	err = temp.Execute(w, p)
 
@@ -140,12 +187,8 @@ func PrepThreads(t *pb.GetClientThreadsResponse) map[string][]string {
 	return res
 }
 
-/******** HTTP Authn callbacks *********/
-
-// IGLoginCallback creates a user with credentials from IG
-func IGLoginCallback(w http.ResponseWriter, r *http.Request) {
-	user := IGAuthCred{}
-	IGLogin(w, r, &user)
-	url := fmt.Sprintf("%v/threads/?access_token=%v&userid=%v", BaseURL, user.Token, user.User.Id)
-	http.Redirect(w, r, url, 302)
+// MustGetValue returns the value of a Key in a cookie
+func MustGetValue(key string, r *http.Request) string {
+	c, _ := r.Cookie(key)
+	return c.Value
 }

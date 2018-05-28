@@ -19,7 +19,7 @@ import (
 
 const (
 	BaseURL       = "http://127.0.0.1"
-	Address_igbot = "http://127.0.0.1:30200"
+	Address_igbot = "127.0.0.1:30200"
 	Name          = "fs-fe"
 	port          = ":30100"
 )
