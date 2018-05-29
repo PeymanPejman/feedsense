@@ -6,7 +6,7 @@ RUN apt-get update && apt-get -y install unzip && apt-get clean
 
 EXPOSE 30100
 
-ENV GOOGLE_APPLICATION_CREDENTIALS /go/src/Feedsense/FeedSense-e776f72962b7.json
+ENV GOOGLE_APPLICATION_CREDENTIALS /go/src/feedsense/fs-sa/src/FeedSense-e776f72962b7.json
 # Install protobuf
 ENV PB_VER 3.1.0
 
